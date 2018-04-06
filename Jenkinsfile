@@ -1,15 +1,14 @@
 pipeline{
-	agent { label 'slave1' }
+	agent { label '!master' }
 
 	stages{
 		stage('Build'){
 			steps{
-				sh '/deploy/tools/maven/bin/mvn clean package'
+				sh 'mvn clean package'
 			}
 			post{
 				success{
-				echo 'Now Archive]ing...'
-				sh 'ls -ltr'
+				echo 'Now Archiveing...'
 				archiveArtifacts artifacts: '**/target/*.war'
 				}
 			}
