@@ -19,5 +19,21 @@ pipeline{
 				build job: 'Udemy/deploy-to-staging'
 			}
 		}
+		stage('Deploy to Production'){
+			steps{
+				timeout(time:5, unit:'DAYS'){
+					input messege: 'Approve production deployment?'
+				}
+				build job: 'Udemy/deploy-to-production'
+			}
+			post{
+				success{
+					echo 'Code deployed to production.'
+				}
+				failure{
+					echo 'Deployment failed'
+				}
+			}
+		}
 	}
 }
