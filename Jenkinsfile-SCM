@@ -1,0 +1,29 @@
+pipeline{
+	agent any
+	// 1. SCM
+	// 2. Build
+	stages{
+		stage('Checkout from SCM'){
+			steps{
+			// checkout([$class: 'GitSCM',branches: scm.branches,extensions: scm.extensions + [[$class: 'CleanCheckout']],userRemoteConfigs: scm.userRemoteConfigs])
+			// checkout([$class: 'GitSCM',branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git-credentials', url: 'https://github.com/user/repo.git']]])
+			checkout([$class: 'GitSCM',branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '6659ddc7-0e5c-4509-a3bb-bf5b8f54b77a', url: 'git@github.com:amjagada/maven-project.git']]])
+			}
+		}
+
+		stage('Build'){
+			steps{
+				// sh 'mvn clean install -X -U -Dmaven.test.skip=true'
+				sh 'clean package'
+			}
+			post{
+				success{
+					echo 'Maven build success'
+				}
+				failure{
+					echo 'Maven build failed'
+				}
+			}
+		}
+	}
+}
