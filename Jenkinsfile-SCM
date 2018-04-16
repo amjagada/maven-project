@@ -1,5 +1,8 @@
 pipeline{
 	agent any
+	 tools { 
+        maven 'LocalMaven' 
+    }
 	// 1. SCM
 	// 2. Build
 	stages{
